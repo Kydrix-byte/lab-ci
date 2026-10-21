@@ -50,6 +50,7 @@ jobs:
           from pathlib import Path
 
           diff = Path("/tmp/pr.diff").read_text(encoding="utf-8")[:12000]
+          source = Path("src/shop/cart.py").read_text(encoding="utf-8")
 
           if not diff.strip():
               raise SystemExit("No changes to review")
@@ -76,7 +77,21 @@ jobs:
               "model": "qwen2.5-coder:1.5b",
               "messages": [
                   {"role": "system", "content": system_prompt},
-                  {"role": "user", "content": "Review this diff:\n" + diff},
+                  {
+                      "role": "user",
+                      "content": (
+                          "Проаналізуй зміни Pull Request у контексті "
+                          "повного вихідного коду модуля.\n\n"
+                          "Повний код src/shop/cart.py:\n"
+                          + source
+                          + "\n\nЗміни Pull Request:\n"
+                          + diff
+                          + "\n\nПеревір, чи правильно взаємодіють "
+                          "методи total() та checkout_total(). "
+                          "Наведи конкретний числовий приклад, "
+                          "якщо виявиш помилку в обчисленнях."
+                      ),
+                  },
               ],
               "stream": False,
               "options": {
