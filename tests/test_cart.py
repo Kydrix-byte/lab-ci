@@ -119,3 +119,9 @@ def test_total_in_invalid_rate(rate: float) -> None:
 
     with pytest.raises(ValueError, match="rate"):
         cart.total_in("USD", cast(RateProvider, rates))
+
+
+def test_checkout_total_applies_discount_once(
+    cart_with_items: Cart,
+) -> None:
+    assert cart_with_items.checkout_total(10) == pytest.approx(414.0)
