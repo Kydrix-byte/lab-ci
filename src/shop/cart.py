@@ -55,6 +55,5 @@ class Cart:
         return max(self._items.values(), key=lambda item: item.price)
 
     def checkout_total(self, discount_percent: float = 0) -> float:
-        """Calculate the final price after applying a discount once."""
-        x = self.total(discount_percent)
-        return round(x * (1 - discount_percent / 100), 2)
+        """Calculate the final price with a single discount."""
+        return self.total(discount_percent)
